@@ -20,6 +20,7 @@
 	"autoload": {
 		"psr-4": {
 			"Addwiki\\Commands\\Mediawiki\\": "src/"
-		}
+		},
+		"files": ["addCommands.php"]
 	}
 }
