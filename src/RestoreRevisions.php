@@ -1,6 +1,6 @@
 <?php
 
-namespace Mediawiki\Bot\Commands\Task;
+namespace Addwiki\Commands\Mediawiki;
 
 use Mediawiki\Api\ApiUser;
 use Mediawiki\Api\MediawikiApi;
