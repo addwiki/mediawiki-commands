@@ -2,10 +2,10 @@
 
 namespace Addwiki\Commands\Mediawiki;
 
+use ArrayAccess;
 use Mediawiki\Api\ApiUser;
 use Mediawiki\Api\MediawikiApi;
 use Mediawiki\Api\MediawikiFactory;
-use Addwiki\Config\AppConfig;
 use Mediawiki\DataModel\Content;
 use Mediawiki\DataModel\EditInfo;
 use Mediawiki\DataModel\Revision;
@@ -20,14 +20,14 @@ class RestoreRevisions extends Command {
 
 	private $appConfig;
 
-	public function __construct( AppConfig $appConfig ) {
+	public function __construct( ArrayAccess $appConfig ) {
 		$this->appConfig = $appConfig;
 		parent::__construct( null );
 	}
 
 	protected function configure() {
-		$defaultWiki = $this->appConfig->get( 'defaults.wiki' );
-		$defaultUser = $this->appConfig->get( 'defaults.user' );
+		$defaultWiki = $this->appConfig->offsetGet( 'defaults.wiki' );
+		$defaultUser = $this->appConfig->offsetGet( 'defaults.user' );
 
 		$this
 			->setName( 'task:restore-revisions' )
@@ -84,8 +84,8 @@ class RestoreRevisions extends Command {
 		$user = $input->getOption( 'user' );
 		$revids = $input->getArgument( 'revid' );
 
-		$userDetails = $this->appConfig->get( 'users.' . $user );
-		$wikiDetails = $this->appConfig->get( 'wikis.' . $wiki );
+		$userDetails = $this->appConfig->offsetGet( 'users.' . $user );
+		$wikiDetails = $this->appConfig->offsetGet( 'wikis.' . $wiki );
 
 		if( $userDetails === null ) {
 			throw new RuntimeException( 'User not found in config' );

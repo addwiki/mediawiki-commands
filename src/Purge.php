@@ -2,9 +2,9 @@
 
 namespace Addwiki\Commands\Mediawiki;
 
+use ArrayAccess;
 use Mediawiki\Api\MediawikiApi;
 use Mediawiki\Api\MediawikiFactory;
-use Addwiki\Config\AppConfig;
 use Mediawiki\DataModel\Page;
 use Mediawiki\DataModel\PageIdentifier;
 use Mediawiki\DataModel\Title;
@@ -17,13 +17,13 @@ class Purge extends Command {
 
 	private $appConfig;
 
-	public function __construct( AppConfig $appConfig ) {
+	public function __construct( ArrayAccess $appConfig ) {
 		$this->appConfig = $appConfig;
 		parent::__construct( null );
 	}
 
 	protected function configure() {
-		$defaultWiki = $this->appConfig->get( 'defaults.wiki' );
+		$defaultWiki = $this->appConfig->offsetGet( 'defaults.wiki' );
 
 		$this
 			->setName( 'task:purge' )
@@ -64,7 +64,7 @@ class Purge extends Command {
 		}
 
 		$wiki = $input->getOption( 'wiki' );
-		$wikiDetails = $this->appConfig->get( 'wikis.' . $wiki );
+		$wikiDetails = $this->appConfig->offsetGet( 'wikis.' . $wiki );
 		$api = new MediawikiApi( $wikiDetails['url'] );
 		$mwFactory = new MediawikiFactory( $api );
 		$purger = $mwFactory->newPagePurger();

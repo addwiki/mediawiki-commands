@@ -2,10 +2,10 @@
 
 namespace Addwiki\Commands\Mediawiki;
 
+use ArrayAccess;
 use Mediawiki\Api\ApiUser;
 use Mediawiki\Api\MediawikiApi;
 use Mediawiki\Api\MediawikiFactory;
-use Addwiki\Config\AppConfig;
 use Mediawiki\DataModel\Content;
 use Mediawiki\DataModel\PageIdentifier;
 use Mediawiki\DataModel\Revision;
@@ -21,14 +21,14 @@ class EditPage extends Command {
 
 	private $appConfig;
 
-	public function __construct( AppConfig $appConfig ) {
+	public function __construct( ArrayAccess $appConfig ) {
 		$this->appConfig = $appConfig;
 		parent::__construct( null );
 	}
 
 	protected function configure() {
-		$defaultWiki = $this->appConfig->get( 'defaults.wiki' );
-		$defaultUser = $this->appConfig->get( 'defaults.user' );
+		$defaultWiki = $this->appConfig->offsetGet( 'defaults.wiki' );
+		$defaultUser = $this->appConfig->offsetGet( 'defaults.user' );
 
 		$this
 			->setName( 'task:edit-page' )
@@ -77,8 +77,8 @@ class EditPage extends Command {
 		$wiki = $input->getOption( 'wiki' );
 		$user = $input->getOption( 'user' );
 
-		$userDetails = $this->appConfig->get( 'users.' . $user );
-		$wikiDetails = $this->appConfig->get( 'wikis.' . $wiki );
+		$userDetails = $this->appConfig->offsetGet( 'users.' . $user );
+		$wikiDetails = $this->appConfig->offsetGet( 'wikis.' . $wiki );
 
 		if( $userDetails === null ) {
 			throw new RuntimeException( 'User not found in config' );
@@ -97,7 +97,7 @@ class EditPage extends Command {
 		}
 
 		$wiki = $input->getOption( 'wiki' );
-		$wikiDetails = $this->appConfig->get( 'wikis.' . $wiki );
+		$wikiDetails = $this->appConfig->offsetGet( 'wikis.' . $wiki );
 		$api = new MediawikiApi( $wikiDetails['url'] );
 		$loggedIn = $api->login( new ApiUser( $userDetails['username'], $userDetails['password'] ) );
 		if( !$loggedIn ) {
@@ -114,6 +114,8 @@ class EditPage extends Command {
 		) );
 
 		$output->writeln( 'Done' );
+
+		return 0;
 	}
 
 }
