@@ -30,7 +30,7 @@ class RestoreRevisions extends Command {
 		$defaultUser = $this->appConfig->offsetGet( 'defaults.user' );
 
 		$this
-			->setName( 'task:restore-revisions' )
+			->setName( 'mw:restore-revisions' )
 			->setDescription( 'Restores the selected revisions of pages as their current revision' )
 			->addOption(
 				'wiki',

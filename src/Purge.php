@@ -26,7 +26,7 @@ class Purge extends Command {
 		$defaultWiki = $this->appConfig->offsetGet( 'defaults.wiki' );
 
 		$this
-			->setName( 'task:purge' )
+			->setName( 'mw:purge' )
 			->setDescription( 'Purges the selected pages' )
 			->addOption(
 				'wiki',

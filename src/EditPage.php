@@ -31,7 +31,7 @@ class EditPage extends Command {
 		$defaultUser = $this->appConfig->offsetGet( 'defaults.user' );
 
 		$this
-			->setName( 'task:edit-page' )
+			->setName( 'mw:edit-page' )
 			->setDescription( 'Edits the page' )
 			->addOption(
 				'wiki',
